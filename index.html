@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IndiaBites — Find your next favourite restaurant</title>
+<meta name="description" content="A hybrid restaurant recommendation system for India, combining content-based filtering and collaborative filtering.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="sample-banner">
+  <strong>Academic demonstration.</strong> All restaurants shown are sample data — fictional names with generated ratings and prices.
+</div>
+
+<header class="site-nav"></header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">🇮🇳 12 cities &middot; 19 cuisines &middot; Hybrid recommender</div>
+    <h1>Find where to eat next, <span class="accent">across India</span>.</h1>
+    <p class="lead">Tell us your city, what you're craving and your budget. A hybrid engine combines what matches your taste with what diners like you rated highly — and explains every single suggestion.</p>
+
+    <form class="searchbar" id="hero-search" action="explore.html" method="get">
+      <div class="sb-field">
+        <span class="sb-icon">🔍</span>
+        <input type="search" name="q" id="hero-q" placeholder="Restaurant, cuisine, locality or PIN code">
+      </div>
+      <div class="sb-field" style="flex:0 0 170px;">
+        <span class="sb-icon">📍</span>
+        <select name="city" id="hero-city"><option value="">All cities</option></select>
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <div class="hero-stats">
+      <div class="stat"><div class="num" id="stat-restaurants">—</div><div class="label">Restaurants listed</div></div>
+      <div class="stat"><div class="num">12</div><div class="label">Indian cities</div></div>
+      <div class="stat"><div class="num">19</div><div class="label">Cuisine types</div></div>
+      <div class="stat"><div class="num">400</div><div class="label">Synthetic rater profiles</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Browse by cuisine</div>
+      <h2>What are you in the mood for?</h2>
+      <p>Pick a cuisine to jump straight into filtered results.</p>
+    </div>
+    <div class="cuisine-grid" id="cuisine-grid"></div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Personalise</div>
+      <h2>Set your taste profile</h2>
+      <p>These preferences feed the content-based arm of the recommender. Everything is stored only in your own browser.</p>
+    </div>
+    <div class="pref-panel">
+      <div class="pref-row">
+        <div>
+          <label for="pref-city">Preferred city</label>
+          <select id="pref-city"><option value="">No preference</option></select>
+        </div>
+        <div>
+          <label for="pref-budget">Budget per person</label>
+          <select id="pref-budget"><option value="">Any budget</option></select>
+        </div>
+        <div>
+          <label for="pref-ambience">Preferred ambience</label>
+          <select id="pref-ambience">
+            <option value="">No preference</option>
+            <option value="casual">Casual</option>
+            <option value="traditional">Traditional</option>
+            <option value="modern">Modern</option>
+            <option value="quiet">Quiet</option>
+            <option value="lively">Lively</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-bottom:9px;">Favourite cuisines</label>
+        <div class="pill-row" id="pref-cuisines"></div>
+      </div>
+      <div>
+        <label style="display:block;font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-bottom:9px;">Dietary preference</label>
+        <div class="pill-row" id="pref-diet">
+          <button type="button" class="pill" data-diet="pure-veg">Pure vegetarian</button>
+          <button type="button" class="pill" data-diet="nonveg">Non-vegetarian</button>
+          <button type="button" class="pill" data-diet="vegan">Vegan</button>
+          <button type="button" class="pill" data-diet="jain">Jain food</button>
+          <button type="button" class="pill" data-diet="halal">Halal</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-bar">
+      <div class="section-head">
+        <div class="section-tag">Recommended for you</div>
+        <h2 id="rec-title">Picked for your taste</h2>
+        <p id="rec-sub">Set your preferences above and these update instantly.</p>
+      </div>
+      <a href="explore.html" class="btn btn-ghost btn-sm">See all &rarr;</a>
+    </div>
+    <div class="resto-grid" id="recommended"></div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-bar">
+      <div class="section-head">
+        <div class="section-tag">Trending now</div>
+        <h2>Most rated this season</h2>
+        <p>Ranked by review volume and rating — the popularity signal the system falls back on for new users.</p>
+      </div>
+    </div>
+    <div class="rail" id="trending"></div>
+  </div>
+</section>
+
+<section id="recent-section" style="display:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Recently viewed</div>
+      <h2>Pick up where you left off</h2>
+    </div>
+    <div class="rail" id="recent"></div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="section-head center">
+      <div class="section-tag">The project behind it</div>
+      <h2>Built as an academic recommender system</h2>
+      <p>IndiaBites is the front end for a hybrid recommendation engine built for an Integrated M.Tech Business Analytics project at VIT Chennai.</p>
+    </div>
+    <div class="nav-cards">
+      <a href="explore.html" class="nav-card">
+        <div class="nc-icon">🔎</div>
+        <h3>Explore restaurants</h3>
+        <p>Full search with filters for city, cuisine, budget, rating, dietary needs and facilities — every result explained.</p>
+        <span class="nc-link">Start exploring &rarr;</span>
+      </a>
+      <a href="about.html" class="nav-card">
+        <div class="nc-icon">⚙️</div>
+        <h3>How the engine works</h3>
+        <p>TF-IDF content filtering, item-based collaborative filtering, the hybrid blend, the nine trained models and the evaluation results.</p>
+        <span class="nc-link">Read the breakdown &rarr;</span>
+      </a>
+      <a href="papers.html" class="nav-card">
+        <div class="nc-icon">📚</div>
+        <h3>Research foundation</h3>
+        <p>The fifteen papers this system's design decisions are grounded in, with what each one contributed.</p>
+        <span class="nc-link">Browse the review &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer></footer>
+
+<script src="data/restaurants.js"></script>
+<script src="js/recommender.js"></script>
+<script src="js/app.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>

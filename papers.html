@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research &middot; IndiaBites</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="sample-banner">
+  <strong>Academic demonstration.</strong> All restaurants shown on this site are sample data — fictional names with generated ratings and prices.
+</div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark">🍛</span> <span>IndiaBites</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="about.html">How It Works</a>
+      <a href="papers.html" class="active">Research</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-head">
+  <div class="wrap">
+    <div class="eyebrow">Literature review</div>
+    <h1>Fifteen papers, and what each one changed</h1>
+    <p class="lead">The review that grounds this project's design decisions. For each paper: what it actually does, and why it mattered for the choices made here &mdash; including the two that define where this project sits relative to prior work.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="papers-toolbar">
+      <input type="search" id="paper-search" placeholder="Search titles, authors, or findings…" aria-label="Search papers">
+      <div id="papers-count" class="papers-count"></div>
+    </div>
+    <div id="theme-filters" class="filter-bar"></div>
+    <div id="papers-list" class="papers-list"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">IndiaBites &mdash; Hybrid Restaurant Recommendation System</div>
+    <div>Integrated M.Tech Business Analytics &middot; VIT Chennai</div>
+    <div class="foot-note">
+      All restaurant listings on this site are <strong>sample data created for academic
+      demonstration</strong>. Names are fictional and ratings, prices and reviews are
+      generated &mdash; they do not describe any real business.
+    </div>
+  </div>
+</footer>
+
+<script src="papers-data.js"></script>
+<script src="papers.js"></script>
+</body>
+</html>

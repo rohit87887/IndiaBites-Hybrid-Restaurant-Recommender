@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore Restaurants — IndiaBites</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="sample-banner">
+  <strong>Academic demonstration.</strong> All restaurants shown are sample data — fictional names with generated ratings and prices.
+</div>
+
+<header class="site-nav"></header>
+
+<div class="page-head">
+  <div class="wrap">
+    <div class="eyebrow">Explore</div>
+    <h1 id="page-title">Find a restaurant</h1>
+    <p class="lead">Filter by city, cuisine, budget and dietary needs. Results are ranked by the hybrid engine and every card explains why it was suggested.</p>
+
+    <form class="searchbar" id="explore-search" style="margin-top:26px;">
+      <div class="sb-field">
+        <span class="sb-icon">🔍</span>
+        <input type="search" id="f-query" placeholder="Restaurant, cuisine, locality or PIN code">
+      </div>
+      <div class="sb-field" style="flex:0 0 165px;">
+        <span class="sb-icon">📍</span>
+        <select id="f-city"><option value="">All cities</option></select>
+      </div>
+      <div class="sb-field" style="flex:0 0 165px;">
+        <span class="sb-icon">🏘️</span>
+        <select id="f-locality"><option value="">All localities</option></select>
+      </div>
+    </form>
+  </div>
+</div>
+
+<section style="padding-top:34px;">
+  <div class="wrap">
+    <div class="explore-layout">
+
+      <aside class="filter-panel">
+        <div class="filter-group">
+          <h4>Cuisine</h4>
+          <div class="check-list" id="f-cuisines"></div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Budget per person</h4>
+          <select id="f-budget"><option value="">Any budget</option></select>
+        </div>
+
+        <div class="filter-group">
+          <h4>Minimum rating</h4>
+          <div class="pill-row" id="f-rating">
+            <button type="button" class="pill on" data-rating="0">Any</button>
+            <button type="button" class="pill" data-rating="3.5">3.5+</button>
+            <button type="button" class="pill" data-rating="4">4.0+</button>
+            <button type="button" class="pill" data-rating="4.5">4.5+</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Dietary</h4>
+          <div class="check-list">
+            <label class="check"><input type="checkbox" data-diet="pure-veg"> Pure vegetarian</label>
+            <label class="check"><input type="checkbox" data-diet="nonveg"> Non-vegetarian</label>
+            <label class="check"><input type="checkbox" data-diet="vegan"> Vegan options</label>
+            <label class="check"><input type="checkbox" data-diet="jain"> Jain food available</label>
+            <label class="check"><input type="checkbox" data-diet="halal"> Halal options</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Facilities</h4>
+          <div class="check-list">
+            <label class="check"><input type="checkbox" data-fac="family"> Family friendly</label>
+            <label class="check"><input type="checkbox" data-fac="cafe"> Café</label>
+            <label class="check"><input type="checkbox" data-fac="fine-dining"> Fine dining</label>
+            <label class="check"><input type="checkbox" data-fac="outdoor"> Outdoor seating</label>
+            <label class="check"><input type="checkbox" data-fac="delivery"> Delivery</label>
+            <label class="check"><input type="checkbox" data-fac="takeaway"> Takeaway</label>
+            <label class="check"><input type="checkbox" data-fac="dine-in"> Dine-in</label>
+          </div>
+        </div>
+
+        <button class="btn btn-ghost btn-sm" id="clear-filters" style="width:100%;">Clear all filters</button>
+      </aside>
+
+      <main>
+        <div class="results-bar">
+          <div class="results-count" id="results-count">Loading…</div>
+          <select class="sort-select" id="f-sort">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="rating">Sort: Rating</option>
+            <option value="popularity">Sort: Popularity</option>
+            <option value="price-low">Sort: Price (low to high)</option>
+            <option value="price-high">Sort: Price (high to low)</option>
+          </select>
+        </div>
+        <div id="results"></div>
+      </main>
+
+    </div>
+  </div>
+</section>
+
+<footer></footer>
+
+<script src="data/restaurants.js"></script>
+<script src="js/recommender.js"></script>
+<script src="js/app.js"></script>
+<script src="js/explore.js"></script>
+</body>
+</html>

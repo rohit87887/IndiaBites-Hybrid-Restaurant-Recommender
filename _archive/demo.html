@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Try the Demo &middot; Hybrid Restaurant Recommender</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark">🍽️</span> Hybrid Recommender</a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About the Project</a>
+      <a href="demo.html" class="active">Try the Demo</a>
+      <a href="papers.html">Literature Review</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-head">
+  <div class="wrap">
+    <div class="eyebrow">Interactive demo</div>
+    <h1>Tell it what you're after &mdash; it figures out the rest</h1>
+    <p class="lead">No knobs, no weights to tune. Just answer like you would to a friend: what you're craving, veg or non-veg, how far you'll go, and what mood you're in. The system decides on its own how much to trust peer ratings vs. your taste profile vs. review sentiment, and explains its pick.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="demo-panel">
+      <div class="demo-controls">
+        <div class="field">
+          <label for="cuisine-select">What are you in the mood to eat?</label>
+          <select id="cuisine-select">
+            <option value="all">Surprise me</option>
+            <option value="Italian">Italian</option>
+            <option value="South Indian">South Indian</option>
+            <option value="North Indian">North Indian</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Cafe">Cafe / Coffee</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="diet-select">Veg or non-veg?</label>
+          <select id="diet-select">
+            <option value="all">Either is fine</option>
+            <option value="veg">Veg only</option>
+            <option value="nonveg">Non-veg only</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="distance-select">How far are you willing to go?</label>
+          <select id="distance-select">
+            <option value="2">Walking distance (&lt; 2 km)</option>
+            <option value="5" selected>Nearby (&lt; 5 km)</option>
+            <option value="10">Across town (&lt; 10 km)</option>
+            <option value="999">Doesn't matter</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="mood-select">What's the occasion / mood?</label>
+          <select id="mood-select">
+            <option value="familiar">Something familiar &amp; reliable</option>
+            <option value="adventurous">Feeling adventurous, try somewhere new</option>
+            <option value="safe">Just want a guaranteed good experience</option>
+            <option value="quick">Quick, no-fuss bite</option>
+          </select>
+        </div>
+      </div>
+      <div id="demo-results" class="demo-results"></div>
+      <p style="font-size:12px;color:var(--text-dim);margin-top:18px;">Illustrative only &mdash; runs on a small hardcoded sample menu in your browser, not the trained models or datasets.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Under the hood</div>
+      <h2>What's happening when you change an answer</h2>
+      <p>The questions above are deliberately non-technical, but each one maps onto a real part of the hybrid pipeline described in the <a href="about.html" class="inline-link">project breakdown</a>.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Cuisine, veg/non-veg &amp; distance</h3>
+        <p>These act as hard filters and feed the <strong>content-based</strong> signal &mdash; the same cuisine, price, and location similarity the real system computes against restaurants a user already liked. Distance also applies a small proximity boost so "near me" genuinely matters without overriding quality.</p>
+      </div>
+      <div class="card">
+        <h3>Your mood</h3>
+        <p>Mood is the stand-in for <strong>personalized fusion weights</strong>. Picking "something familiar" leans the blend toward collaborative filtering; "guaranteed good experience" leans it toward review sentiment; "adventurous" leans toward taste-profile match. In the real system these weights are learned per user via NNLS regression rather than chosen from a menu.</p>
+      </div>
+      <div class="card">
+        <h3>The match percentage</h3>
+        <p>That's the <strong>fused score</strong> &mdash; the weighted combination of the three signals plus the proximity boost. It's the single number the final ranking sorts on.</p>
+      </div>
+      <div class="card">
+        <h3>The green sentence</h3>
+        <p>That's the <strong>explainability layer</strong>, the project's second original contribution. Every pick states its reasoning in plain English rather than handing you a bare score.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">Hybrid Restaurant Recommendation System</div>
+    <div>Integrated M.Tech Business Analytics &middot; VIT Chennai</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

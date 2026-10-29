@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works &middot; IndiaBites</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="sample-banner">
+  <strong>Academic demonstration.</strong> All restaurants shown on this site are sample data — fictional names with generated ratings and prices.
+</div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span class="brand-mark">🍛</span> <span>IndiaBites</span></a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="about.html" class="active">How It Works</a>
+      <a href="papers.html">Research</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-head">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h1>How the system is built, trained, and judged</h1>
+    <p class="lead">Everything from the live engine running this site to the nine trained models, the seven evaluation metrics, the two original contributions, and an honest account of where it did and didn't work.</p>
+  </div>
+</div>
+
+<div class="page-toc">
+  <div class="wrap">
+    <a href="#overview">Overview</a>
+    <a href="#engine">Live Engine</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#data">Data</a>
+    <a href="#models">Models</a>
+    <a href="#evaluation">Evaluation</a>
+    <a href="#results">Results</a>
+    <a href="#contributions">Contributions</a>
+    <a href="#findings">Findings</a>
+    <a href="#positioning">Positioning</a>
+  </div>
+</div>
+
+<section id="overview">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Overview</div>
+      <h2>Why hybrid, and why this matters</h2>
+      <p>Collaborative filtering alone can't explain <em>why</em> a restaurant was picked. Content-based filtering alone can't tell you if diners were actually satisfied. Star ratings alone miss what review text really says. This system fuses all three into a single ranking, then learns how to weight them per user &mdash; instead of one fixed formula applied to everyone.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="icon icon-cf">🤝</div>
+        <h3>Collaborative Filtering</h3>
+        <p>Recommends based on what similar users rated highly &mdash; the "people like you" signal, powered by matrix factorization and neighborhood models.</p>
+      </div>
+      <div class="card">
+        <div class="icon icon-cb">🍜</div>
+        <h3>Content-Based Filtering</h3>
+        <p>Recommends based on cuisine, price, and location similarity to restaurants a user already liked &mdash; grounded in what the restaurant actually is.</p>
+      </div>
+      <div class="card">
+        <div class="icon icon-sa">💬</div>
+        <h3>Sentiment Analysis</h3>
+        <p>Reads customer review text to gauge real satisfaction beyond the star rating &mdash; catching the gap between a 4-star review and a lukewarm paragraph.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="engine" class="alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Live engine</div>
+      <h2>What actually runs on this site</h2>
+      <p>The <a href="explore.html" class="inline-link">Explore page</a> is powered by a working implementation of two of the three arms. Here is exactly what happens when you change a filter.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="icon icon-cf">📐</div>
+        <h3>Step 1 &mdash; Content-based arm (TF-IDF + cosine)</h3>
+        <p>Every restaurant is converted into a bag of attribute tokens &mdash; cuisines (weighted ×3), ambience, facilities, dietary flags, price band and location. Inverse document frequency is computed across the whole catalogue, so a common token like <em>dine-in</em> counts for far less than a rare one like <em>Chettinad</em>. Your stated preferences become a query vector in the same space, and each restaurant is scored by cosine similarity against it.</p>
+      </div>
+      <div class="card">
+        <div class="icon icon-sa">🤝</div>
+        <h3>Step 2 &mdash; Collaborative arm (item-item)</h3>
+        <p>400 synthetic rater profiles with stable cuisine and budget affinities produce a sparse user&times;item rating matrix. Item ratings are mean-centred and an item-item cosine similarity matrix is precomputed. When you like or rate a restaurant, a score is predicted for every other restaurant as a similarity-weighted average over the things you reacted to &mdash; the approach from Sarwar et al. (2001).</p>
+      </div>
+      <div class="card">
+        <div class="icon icon-cb">⚖️</div>
+        <h3>Step 3 &mdash; Normalise, then blend</h3>
+        <p>The two arms produce scores on different natural scales, so each is min&ndash;max normalised to [0,&nbsp;1] across the candidate set before blending. Otherwise whichever arm happened to have the wider spread would dominate the ranking for reasons that have nothing to do with quality.</p>
+      </div>
+      <div class="card">
+        <div class="icon icon-sa">🧊</div>
+        <h3>Step 4 &mdash; Cold start</h3>
+        <p>A brand-new visitor has rated nothing, so the collaborative arm has no history to work from and returns nothing at all. Rather than emit a meaningless zero, the system substitutes a popularity score (review volume scaled by rating) until real feedback exists. The explanation text changes to say so.</p>
+      </div>
+    </div>
+
+    <div class="fusion">
+      <div class="node">Content score<br><span style="font-weight:500;font-size:12px;color:var(--ink-faint);">TF-IDF cosine</span></div>
+      <div class="arrow">×0.6</div>
+      <div class="node">Collaborative score<br><span style="font-weight:500;font-size:12px;color:var(--ink-faint);">item-item CF</span></div>
+      <div class="arrow">×0.4</div>
+      <div class="node final">Hybrid ranking</div>
+    </div>
+
+    <p class="results-note" style="margin-top:18px;">
+      Weights are configurable in <code>js/recommender.js</code> via the <code>WEIGHTS</code> constant.
+      The restaurant details page shows all three numbers &mdash; content, collaborative and blended &mdash;
+      for whichever listing you're looking at.
+    </p>
+
+    <div class="finding" style="margin-top:28px;">
+      <h4>What the live site does <em>not</em> do</h4>
+      <p>The sentiment arm described below is part of the trained research pipeline but is not wired into this front end &mdash; the sample listings carry no review text for VADER to score. The live site runs the content and collaborative arms only. Likewise, the fusion weights here are the fixed 0.6&nbsp;/&nbsp;0.4 split rather than the per-user NNLS weights described under Contributions.</p>
+    </div>
+  </div>
+</section>
+
+<section id="methodology">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Methodology</div>
+      <h2>How the three signals become one ranking</h2>
+      <p>Each restaurant gets a score from all three techniques. Those scores are combined into a single fused ranking &mdash; the weighting is what makes this system personalized rather than one-size-fits-all.</p>
+    </div>
+    <div class="fusion">
+      <div class="node">Collaborative Filtering score</div>
+      <div class="arrow">+</div>
+      <div class="node">Content-Based score</div>
+      <div class="arrow">+</div>
+      <div class="node">Sentiment score</div>
+      <div class="arrow">=</div>
+      <div class="node final">Personalized fused ranking</div>
+    </div>
+  </div>
+</section>
+
+<section id="data">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Data</div>
+      <h2>Datasets &amp; the synthetic fallback layer</h2>
+      <p>Built on Zomato-style and Swiggy-style restaurant catalogues (Kaggle). Since public catalogues don't include per-user rating history, a synthetic layer of ~400 users' ratings and reviews fills that gap &mdash; and its limitations are reported honestly, not hidden.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Restaurant catalogues</h3>
+        <p>Zomato-style and Swiggy-style datasets sourced from Kaggle, giving cuisine, price, location, and aggregate rating data across two independently structured sources &mdash; used for cross-dataset validation throughout.</p>
+      </div>
+      <div class="card">
+        <h3>Synthetic user layer</h3>
+        <p>~400 synthetic users with ratings and review text, generated to simulate per-user history the public catalogues don't provide. Flagged explicitly wherever it inflates results (see Findings).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="models">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Models</div>
+      <h2>Nine models, two tasks</h2>
+      <p>Rating prediction models are benchmarked against simple baselines to make sure added complexity is actually earning its keep; sentiment classifiers are compared for accuracy versus what's practical to run live.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Model</th><th>Task</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Global Mean</td><td>Rating prediction</td><td><span class="badge badge-base">Baseline</span></td></tr>
+          <tr><td>Popularity</td><td>Rating prediction</td><td><span class="badge badge-base">Baseline</span></td></tr>
+          <tr><td>SVD (hyperparameter-tuned)</td><td>Rating prediction</td><td><span class="badge badge-adv">Advanced</span></td></tr>
+          <tr><td>NMF</td><td>Rating prediction</td><td><span class="badge badge-adv">Advanced</span></td></tr>
+          <tr><td>Item-based KNN</td><td>Rating prediction</td><td><span class="badge badge-adv">Advanced</span></td></tr>
+          <tr><td>User-based KNN</td><td>Rating prediction</td><td><span class="badge badge-adv">Advanced</span></td></tr>
+          <tr><td>VADER</td><td>Sentiment classification</td><td><span class="badge badge-sent">Used in live pipeline</span></td></tr>
+          <tr><td>Multinomial Naive Bayes</td><td>Sentiment classification</td><td><span class="badge badge-sent">Compared</span></td></tr>
+          <tr><td>Logistic Regression</td><td>Sentiment classification</td><td><span class="badge badge-sent">Compared</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="evaluation">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Evaluation</div>
+      <h2>Seven metrics, run across two datasets</h2>
+      <p>No single metric tells the whole story &mdash; error-based metrics and ranking-based metrics can disagree, which is exactly what happened here (see Findings). Everything is re-run on both datasets for cross-validation.</p>
+    </div>
+    <div class="chip-row">
+      <div class="chip">RMSE</div>
+      <div class="chip">MAE</div>
+      <div class="chip">Precision@K</div>
+      <div class="chip">Recall@K</div>
+      <div class="chip">F1@K</div>
+      <div class="chip">NDCG@K</div>
+      <div class="chip">Coverage</div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Results</div>
+      <h2>What the numbers actually said</h2>
+      <p>Every model scored on every metric, on both datasets. Best value in each column is highlighted &mdash; lower wins for the error metrics, higher for everything else. All @K metrics use K&nbsp;=&nbsp;<span class="k-value">10</span>.</p>
+    </div>
+
+    <h3 class="results-title">Rating prediction</h3>
+    <div id="dataset-toggle" class="filter-bar"></div>
+    <div id="rating-table" class="table-wrap results-table"></div>
+    <p class="results-note">Compare the error columns (RMSE, MAE) against the ranking columns (Precision@K, NDCG@K) &mdash; the disagreement between them is the finding discussed below.</p>
+
+    <h3 class="results-title">Sentiment classification</h3>
+    <div id="sentiment-table" class="table-wrap results-table"></div>
+    <p class="results-note">Scores here are measured on the synthetic review layer and are inflated relative to organic review text &mdash; see the findings below.</p>
+
+    <h3 class="results-title">Fixed vs. personalized fusion weights</h3>
+    <div id="fusion-table" class="table-wrap results-table"></div>
+    <p class="results-note">The headline test of the first novel contribution: whether learning each user's own blend via NNLS beats one fixed formula applied to everyone.</p>
+  </div>
+</section>
+
+<section id="contributions">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Novel contributions</div>
+      <h2>What's actually new here</h2>
+      <p>The hybrid architecture itself follows prior work. These two pieces are the project's original contribution.</p>
+    </div>
+    <div class="contrib">
+      <div class="card">
+        <div class="num-badge">1</div>
+        <div>
+          <h3>Personalized fusion weights</h3>
+          <p>Instead of one fixed blend formula applied to every user, each user gets their own weighting across the three signals &mdash; learned via Non-Negative Least Squares (NNLS) regression on their own rating history. The system adapts to whether a given diner leans on peer opinions, personal taste profile, or review sentiment.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="num-badge">2</div>
+        <div>
+          <h3>Explainability layer</h3>
+          <p>Every recommendation ships with a plain-English reason &mdash; e.g. "recommended because similar diners rated it highly" or "matches your usual cuisine and price range" &mdash; instead of a black-box score.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="findings">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Findings</div>
+      <h2>Honest results, not just the good ones</h2>
+      <p>These are worth featuring rather than hiding &mdash; they're what make the evaluation credible.</p>
+    </div>
+    <div class="finding">
+      <h4>The Popularity baseline sometimes beats smarter models on raw RMSE</h4>
+      <p>A known effect in recommender systems: minimizing rating error isn't the same as producing a good ranked list. Explained and resolved by looking at the ranking metrics (Precision@K, NDCG@K) alongside RMSE, not RMSE alone.</p>
+    </div>
+    <div class="finding">
+      <h4>Personalized fusion weights helped on one dataset but not the other</h4>
+      <p>The NNLS-learned weighting improved ranking quality on one of the two datasets and showed no clear gain on the other &mdash; reported as-is rather than cherry-picked, and discussed as a direction for further work.</p>
+    </div>
+    <div class="finding">
+      <h4>Sentiment classifier scores are inflated on synthetic data</h4>
+      <p>Because the ~400-user layer is synthetically generated, sentiment classification accuracy on it is higher than it would likely be on organic review text &mdash; flagged explicitly rather than presented at face value.</p>
+    </div>
+  </div>
+</section>
+
+<section id="positioning">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">Positioning</div>
+      <h2>Where this sits relative to prior work</h2>
+      <p>Honest about the tradeoffs &mdash; this isn't claiming to beat the state of the art on accuracy.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="pos-table">
+        <thead>
+          <tr><th>Work</th><th>Approach</th><th>Tradeoff vs. this project</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Asani, Vahdat-Nejad &amp; Sadri (2021)<br><span style="font-size:12px;color:var(--text-dim);">Machine Learning with Applications</span></td>
+            <td>Hybrid collaborative + content + sentiment architecture</td>
+            <td>This project follows the same core architecture &mdash; not a novel structure, but extended with personalized fusion weights and explainability</td>
+          </tr>
+          <tr>
+            <td>Darraz et al. (2025)</td>
+            <td>BERT-based sentiment &amp; recommendation modeling</td>
+            <td>More sophisticated and likely higher accuracy ceiling, at much higher compute cost and narrower single-dataset evaluation</td>
+          </tr>
+          <tr>
+            <td>This project</td>
+            <td>Classical models (SVD/NMF/KNN + VADER) with personalized NNLS fusion</td>
+            <td>Trades some accuracy ceiling for low compute cost, full reproducibility, and broader evaluation &mdash; 2 datasets, 9 models, 7 metrics</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="page-cta">
+      <a href="explore.html" class="btn btn-primary">Try the live recommender</a>
+      <a href="papers.html" class="btn btn-ghost">Read the literature review</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">IndiaBites &mdash; Hybrid Restaurant Recommendation System</div>
+    <div>Integrated M.Tech Business Analytics &middot; VIT Chennai</div>
+    <div class="foot-note">
+      All restaurant listings on this site are <strong>sample data created for academic
+      demonstration</strong>. Names are fictional and ratings, prices and reviews are
+      generated &mdash; they do not describe any real business.
+    </div>
+  </div>
+</footer>
+
+<script src="results-data.js"></script>
+<script src="results.js"></script>
+</body>
+</html>

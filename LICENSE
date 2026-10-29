@@ -1,0 +1,92 @@
+PROPRIETARY LICENCE - ALL RIGHTS RESERVED
+
+Copyright (c) 2026 E Bharathvikraman (23MIA1059), JB Dinesh Kumar (23MIA1126)
+and S Rohit (23MIA1175). All Rights Reserved.
+
+Project: IndiaBites - An Explainable Hybrid Restaurant Recommendation System
+         with Personalised Fusion Weights
+Course : CSE4077 - Recommender Systems
+Faculty: Dr S Vigneshwari, School of Computer Science and Engineering,
+         Vellore Institute of Technology, Chennai
+
+
+1. OWNERSHIP
+
+   This repository and all of its contents - including but not limited to the
+   source code, the evaluation pipeline, the generated datasets and results,
+   the figures, the project report, the research paper and the presentation -
+   are the exclusive intellectual property of the copyright holders named
+   above.
+
+
+2. NO LICENCE GRANTED
+
+   NO permission, licence or right of any kind is granted by the publication
+   of this repository. Specifically, and without limitation, you may NOT:
+
+     (a) use this work, in whole or in part, for any purpose;
+     (b) copy, reproduce, download or store this work except as strictly
+         necessary for the permitted viewing described in Clause 3;
+     (c) modify, adapt, translate or create derivative works from it;
+     (d) merge it into, or incorporate it within, any other work;
+     (e) publish, distribute, transmit, host or otherwise make it available;
+     (f) sublicense, rent, lease, lend or sell it;
+     (g) use it, in whole or in part, to train, fine-tune, evaluate or
+         otherwise develop any machine-learning or artificial-intelligence
+         model or dataset;
+     (h) remove, alter or obscure this licence or any copyright notice.
+
+   The absence of an explicit prohibition above shall not be construed as
+   permission. All rights not expressly granted are reserved.
+
+
+3. LIMITED VIEWING
+
+   Reading this repository through the GitHub web interface, for the sole
+   purposes of academic evaluation by the course faculty and examiners, or of
+   personal non-commercial reference, is permitted. Such viewing confers no
+   further right whatsoever.
+
+   NOTE ON FORKING: this repository is published publicly, and the GitHub
+   Terms of Service permit any GitHub user to view and fork a public
+   repository. Forking is therefore technically possible and is not prevented
+   by this licence. It remains, however, subject to Clause 2: a fork grants no
+   right to use, modify, redistribute or submit this work. To remove the
+   technical possibility of copying, the repository must be made private.
+
+
+4. ACADEMIC INTEGRITY
+
+   This work was produced as an academic submission. Submitting any part of
+   it, whether verbatim or paraphrased, as your own work to any educational
+   institution constitutes plagiarism and academic misconduct. Doing so is
+   expressly prohibited and may be reported to the institution concerned.
+
+
+5. STATUS OF THE DATA
+
+   All restaurant listings contained in this repository are SAMPLE DATA
+   created for academic demonstration. Restaurant names are fictional, and
+   ratings, prices, review counts and review text are generated. They do not
+   describe, represent or evaluate any real business. The per-user interaction
+   data used in the evaluation is likewise synthetic, because public
+   restaurant catalogues carry no per-user rating history. No figure reported
+   in this repository should be interpreted as a measurement of any real-world
+   establishment or of real user behaviour.
+
+
+6. NO WARRANTY
+
+   THIS WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+   WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
+   OR IN CONNECTION WITH THIS WORK OR ITS USE.
+
+
+7. PERMISSIONS
+
+   Requests for any permission beyond Clause 3 must be made in writing to the
+   copyright holders. Permission is granted only where given expressly and in
+   writing.

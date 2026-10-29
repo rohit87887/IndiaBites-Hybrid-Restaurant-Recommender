@@ -1,0 +1,28 @@
+# Editor / tooling
+.claude/
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+package-lock.json
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Word / Office lock files
+~$*
+.~lock.*
+
+# Build and scratch output
+*.pdf
+_scratch/
