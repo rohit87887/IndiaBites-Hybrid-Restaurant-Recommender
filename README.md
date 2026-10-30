@@ -12,7 +12,7 @@
 | **Programme** | M.Tech Integrated CSE (Business Analytics) |
 | **Institution** | Vellore Institute of Technology, Chennai |
 | **Faculty Mentor** | Dr S Vigneshwari |
-| **Authors** | E Bharathvikraman (23MIA1059) · JB Dinesh Kumar (23MIA1126) · S Rohit (23MIA1175) |
+| **Authors** |S Rohit(23MIA1175) · Mridula S(23MIA1004) · Fedrick Engels (23MIA1082) |
 
 ---
 
